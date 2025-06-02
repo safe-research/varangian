@@ -9,7 +9,7 @@
         "shared-utils"
     ],
     "scripts": {
-        "build:all": "npm run build -w shared-utils -w fetch-tx -w relay",
+        "build:all": "npm run build -w shared-utils -w check -w fetch-tx -w relay",
         "install:all": "npm install"
     },
     "devDependencies": {
