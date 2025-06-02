@@ -1,0 +1,11 @@
+{
+  "solidity.compileUsingRemoteVersion": "v0.8.30+commit.73712a01", // Match your solc-version
+  "solidity.defaultCompiler": "remote", // Use the remote compiler
+  "solidity.packageDefaultDependenciesContractsDirectory": "contracts/src",
+  "solidity.packageDefaultDependenciesDirectory": "contracts/lib",
+  "editor.formatOnSave": true,
+  "[solidity]": {
+    "editor.defaultFormatter": "JuanBlanco.solidity"
+  },
+  "solidity.formatter": "forge"
+}
