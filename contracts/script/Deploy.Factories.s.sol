@@ -1,20 +1,19 @@
 // SPDX-License-Identifier: LGPL-3.0-only
-pragma solidity =0.8.30;
+pragma solidity >=0.8.28;
 
 import {Script, console} from "forge-std/Script.sol";
-import {VarangianGuard} from "../src/VarangianGuard.sol";
+import {SafenetGuardFactory} from "../src/SafenetGuardFactory.sol";
 
 contract DeployScript is Script {
-    VarangianGuard public guard;
+    SafenetGuardFactory public factory;
 
     function setUp() public {}
 
     function run() public {
         vm.startBroadcast();
 
-        uint256 delay = 0;
         // TODO: use deterministic deployment
-        guard = new VarangianGuard(delay);
+        factory = new SafenetGuardFactory();
 
         vm.stopBroadcast();
     }

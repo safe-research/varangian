@@ -1,0 +1,12 @@
+[submodule "contracts/lib/forge-std"]
+	path = contracts/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "contracts/lib/safe-smart-account"]
+	path = contracts/lib/safe-smart-account
+	url = https://github.com/safe-global/safe-smart-account
+[submodule "contracts/lib/openzeppelin-contracts"]
+	path = contracts/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "contracts/lib/safenet"]
+	path = contracts/lib/safenet
+	url = https://github.com/safe-global/safenet
