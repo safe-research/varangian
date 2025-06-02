@@ -16,7 +16,7 @@ const findToExecute = (txs: SafeTransaction[]): SafeTransaction | null => {
 
 async function run() {
   try {
-    const coSignerMaterial = JSON.parse(core.getInput('co-signer-material', { required: true }));
+    const coSignerMaterial = core.getInput('co-signer-material', { required: true });
     const wallet = new ethers.Wallet(ethers.keccak256(ethers.toUtf8Bytes(coSignerMaterial)))
     core.info(`Co-signer address: ${wallet.address}`)
     /*
