@@ -18,10 +18,11 @@ jobs:
           cache-dependency-path: 'actions/package-lock.json'
 
       - name: Install All Dependencies (using workspaces)
+        working-directory: actions
         run: npm install
 
-
       - name: Build
+        working-directory: actions
         run: npm run build:all
 
       - name: Fetch Tx
