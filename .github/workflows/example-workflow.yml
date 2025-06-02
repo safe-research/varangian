@@ -1,10 +1,10 @@
-name: Monorepo Actions Example
+name: Varangian Actions Example
 
 on:
   workflow_dispatch: # Allows manual triggering
 
 jobs:
-  build-and-run-actions:
+  fetch-check-relay:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -38,6 +38,7 @@ jobs:
 
       - name: Relay Tx
         id: relay
+        if: ${{ steps.fetch-tx.outputs.safe-tx != '' }}
         uses: ./actions/relay 
         with:
           safe-tx: ${{ steps.fetch-tx.outputs.safe-tx }}
