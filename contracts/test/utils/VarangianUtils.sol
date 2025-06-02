@@ -4,12 +4,16 @@ pragma solidity >=0.8.28;
 import {Vm} from "forge-std/Vm.sol";
 import {MultiSendCallOnly} from "safe-smart-account/contracts/libraries/MultiSendCallOnly.sol";
 import {SafenetGuardFactory} from "../../src/SafenetGuardFactory.sol";
-import {SafeUtils,SafeTxUtils,MultiSigSafeTx,SafeTx,Enum,ISafe} from "./SafeUtils.sol";
+import {SafeUtils, SafeTxUtils, MultiSigSafeTx, SafeTx, Enum, ISafe} from "./SafeUtils.sol";
 
 library VarangianUtils {
     using SafeTxUtils for SafeTx;
 
-    function buildSetupCall(ISafe safe, SafenetGuardFactory factory, MultiSendCallOnly multiSend) internal view returns (MultiSigSafeTx memory safeTx, address expectedGuard) {
+    function buildSetupCall(ISafe safe, SafenetGuardFactory factory, MultiSendCallOnly multiSend)
+        internal
+        view
+        returns (MultiSigSafeTx memory safeTx, address expectedGuard)
+    {
         expectedGuard = factory.calculateAddress(0, address(safe));
         SafeTx[] memory txs = new SafeTx[](2);
         txs[0] = SafeTx({

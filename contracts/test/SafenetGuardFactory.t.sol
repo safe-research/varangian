@@ -27,7 +27,7 @@ contract SafenetGuardFactoryTest is Test, MockSafeEnv {
 
         factory = new SafenetGuardFactory();
 
-        (signer,signerPK) = makeAddrAndKey("signer");
+        (signer, signerPK) = makeAddrAndKey("signer");
         signers = [signer];
 
         mockSafe = createSafe(0, signers, 1);
@@ -42,7 +42,6 @@ contract SafenetGuardFactoryTest is Test, MockSafeEnv {
     }
 
     function testSettingUpGuard() public {
-
         // Checking if any guard is set in safe.
         assertEq(mockSafe.guard(), address(0));
 
@@ -62,7 +61,7 @@ contract SafenetGuardFactoryTest is Test, MockSafeEnv {
 
         bytes memory setGuarantor = abi.encodeWithSelector(SafenetGuard.setGuarantor.selector, address(1));
         vm.executeSafeTxFromOwner(signer, safe, SafeUtils.buildContractCall(guard, setGuarantor));
-        
+
         vm.expectRevert(abi.encodeWithSignature("NotApproved()"));
         vm.executeSafeTxFromOwner(signer, safe, SafeUtils.buildContractCall(address(safe), ""));
     }
@@ -75,11 +74,11 @@ contract SafenetGuardFactoryTest is Test, MockSafeEnv {
         (address guarantor, uint256 guarantorPK) = makeAddrAndKey("guarantor");
         bytes memory setGuarantor = abi.encodeWithSelector(SafenetGuard.setGuarantor.selector, guarantor);
         vm.executeSafeTxFromOwner(signer, safe, SafeUtils.buildContractCall(guard, setGuarantor));
-        
+
         MultiSigSafeTx memory safeTx = SafeUtils.buildContractCall(address(safe), "");
         bytes32 safeTxHash = safe.txHash(safeTx);
         (uint8 sv, bytes32 sr, bytes32 ss) = vm.sign(signerPK, safeTxHash);
         (uint8 gv, bytes32 gr, bytes32 gs) = vm.sign(guarantorPK, safeTxHash);
-        safe.executeSafeTx(safeTx, abi.encodePacked(sr,ss,sv,gr,gs,gv));
+        safe.executeSafeTx(safeTx, abi.encodePacked(sr, ss, sv, gr, gs, gv));
     }
 }

@@ -55,10 +55,7 @@ library SafeUtils {
         return executeSafeTx(safe, safeTx, buildSignaturesBytes(signatures));
     }
 
-    function txHash(ISafe safe, MultiSigSafeTx memory safeTx)
-        internal
-        returns (bytes32 safeTxHash)
-    {
+    function txHash(ISafe safe, MultiSigSafeTx memory safeTx) internal returns (bytes32 safeTxHash) {
         return safe.getTransactionHash(
             safeTx.details.to,
             safeTx.details.value,
