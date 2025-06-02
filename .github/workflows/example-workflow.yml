@@ -32,6 +32,12 @@ jobs:
           safe-address: '0x779720809250AF7931935a192FCD007479C41299'
           service-url: 'https://safe-transaction-gnosis-chain.safe.global/'
 
+      - name: Check Tx
+        id: check-tx
+        uses: ./actions/check 
+        with:
+          co-signer-material: ${{ secrets.COSIGNER_MATERIAL }}
+
       - name: Log Tx to Relay
         run: |
           echo "Tx to Relay: ${{ steps.fetch-tx.outputs.safe-tx }}"

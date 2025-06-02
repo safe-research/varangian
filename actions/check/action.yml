@@ -1,0 +1,20 @@
+# .github/actions/my-custom-action/action.yml
+name: 'Varangian Guard - Check'
+description: 'A simple guard for a Safe'
+author: 'rmeissner'
+
+inputs:
+  co-signer-material:
+    description: "Private key material used for co-signing"
+    required: true
+  safe-tx:
+    description: "Safe Transaction to check"
+    # required: true
+
+outputs:
+  co-signer-signature: # id of output
+    description: 'Signature of the co-signer'
+
+runs:
+  using: 'node20' # Specify the Node.js version to use
+  main: 'dist/main.js' # Entry point for your action

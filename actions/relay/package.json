@@ -9,7 +9,7 @@
     "example": "ts-node examples/simple.ts"
   },
   "keywords": [],
-  "author": "Your Name",
+  "author": "rmeissner",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -1,5 +1,5 @@
 {
-  "name": "@safe-research/varangian-guard-action-fetch",
+  "name": "@safe-research/varangian-guard-action-check",
   "version": "1.0.0",
   "description": "A simple guard for a Safe",
   "main": "lib/index.js",
