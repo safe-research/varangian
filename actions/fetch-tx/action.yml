@@ -17,5 +17,5 @@ outputs:
     description: 'Next transaction to execute'
 
 runs:
-  using: 'node22' # Specify the Node.js version to use
+  using: 'node20' # Specify the Node.js version to use
   main: 'dist/main.js' # Entry point for your action
