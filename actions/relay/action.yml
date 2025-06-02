@@ -1,0 +1,13 @@
+# .github/actions/my-custom-action/action.yml
+name: 'Varangian Guard - Relay'
+description: 'A simple guard for a Safe'
+author: 'rmeissner'
+
+inputs:
+  safe-tx:
+    description: "Safe Transaction to relay"
+    required: true
+
+runs:
+  using: 'node22' # Specify the Node.js version to use
+  main: 'dist/main.js' # Entry point for your action

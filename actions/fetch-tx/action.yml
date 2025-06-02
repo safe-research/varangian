@@ -1,5 +1,5 @@
 # .github/actions/my-custom-action/action.yml
-name: 'Varangian Guard'
+name: 'Varangian Guard - Fetch Tx'
 description: 'A simple guard for a Safe'
 author: 'rmeissner'
 
@@ -13,8 +13,8 @@ inputs:
     default: "https://safe-transaction-gnosis-chain.safe.global/"
 
 outputs:
-  greeting: # id of output
-    description: 'The greeting message'
+  safe-tx: # id of output
+    description: 'Next transaction to execute'
 
 runs:
   using: 'node22' # Specify the Node.js version to use

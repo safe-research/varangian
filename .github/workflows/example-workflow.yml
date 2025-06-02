@@ -1,0 +1,40 @@
+name: Monorepo Actions Example
+
+on:
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-and-run-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm' # Cache npm dependencies for faster builds
+
+      - name: Install All Dependencies (using workspaces)
+        run: npm install
+
+      - name: Build
+        run: npm run build:all
+
+      - name: Fetch Tx
+        id: fetch-tx
+        uses: ./actions/fetch-tx 
+        with:
+          safe-address: '0x779720809250AF7931935a192FCD007479C41299'
+          service-url: 'https://safe-transaction-gnosis-chain.safe.global/'
+
+      - name: Log Tx to Relay
+        run: |
+          echo "Tx to Relay: ${{ steps.fetch-tx.outputs.safe-tx }}"
+
+      - name: Relay Tx
+        id: relay
+        uses: ./actions/relay 
+        with:
+          safe-tx: ${{ steps.fetch-tx.outputs.safe-tx }}
