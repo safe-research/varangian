@@ -44,6 +44,13 @@ export interface EthTransaction {
 }
 
 export interface ChainInfo {
-    id: number;
-    name: string;
+    chainId: string;
+    chainName: string;
+    publicRpcUri: RpcInfo;
+    shortName: string
+}
+
+export interface RpcInfo {
+    authentication: string;
+    value: string;
 }

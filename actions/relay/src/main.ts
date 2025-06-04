@@ -1,6 +1,6 @@
 // .github/actions/my-custom-action/src/main.ts
 import * as core from '@actions/core';
-import { EthTransaction, ExtendedSafeTransaction, buildEthTransaction } from 'shared-utils';
+import { buildEthTransaction, EthTransaction, ExtendedSafeTransaction, relayEthTransaction } from 'shared-utils';
 
 async function run() {
   try {
@@ -10,17 +10,9 @@ async function run() {
     core.info("Relay transaction")
     const transactionToRelay: EthTransaction = buildEthTransaction(safeTx, coSignerSig)
     console.log({ transactionToRelay })
-    const resp = await fetch(`https://safe-client.safe.global/v1/chains/${safeTx.chainId}/relay`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        version: "1.0.0",
-        ...transactionToRelay
-      })
-    })
-    core.info(await resp.text())
+
+    const resp = await relayEthTransaction(safeTx.chainId, transactionToRelay)
+    core.info(resp)
   } catch (error: any) {
     // If an error occurs, set the action state to failed
     core.setFailed(error.message);

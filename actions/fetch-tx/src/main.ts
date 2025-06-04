@@ -1,6 +1,6 @@
 // .github/actions/my-custom-action/src/main.ts
 import * as core from '@actions/core';
-import { SafeTransaction, ExtendedSafeTransaction, loadNextTxs, loadSafeInfo, loadChainInfo } from 'shared-utils';
+import { SafeTransaction, ExtendedSafeTransaction, loadNextTxs, loadSafeInfo, loadChainId } from 'shared-utils';
 
 const findToExecute = (txs: SafeTransaction[], version: string, chainId: number): ExtendedSafeTransaction | null => {
   const eligableTxs: SafeTransaction[] = []
@@ -19,9 +19,9 @@ const findToExecute = (txs: SafeTransaction[], version: string, chainId: number)
 }
 
 const processFetchTx = async (serviceUrl: string, safeAddress: string): Promise<{ safeTx: ExtendedSafeTransaction | null }> => {
-  core.info("Load Chain information")
-  const chainInfo = await loadChainInfo(serviceUrl, safeAddress);
-  console.log({ chainInfo });
+  core.info("Load Chain Id")
+  const chainId = await loadChainId(serviceUrl);
+  console.log({ chainId });
   core.info("Load Safe information")
   const safeInfo = await loadSafeInfo(serviceUrl, safeAddress);
   console.log({ safeInfo });
@@ -29,7 +29,7 @@ const processFetchTx = async (serviceUrl: string, safeAddress: string): Promise<
   const nextTxs = await loadNextTxs(serviceUrl, safeInfo);
   console.log({ nextTxs });
   core.info("Find transactions that should be executed")
-  const safeTx = findToExecute(nextTxs, safeInfo.version, chainInfo.id);
+  const safeTx = findToExecute(nextTxs, safeInfo.version, chainId);
   return {
     safeTx
   }
