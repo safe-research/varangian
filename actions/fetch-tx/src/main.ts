@@ -12,6 +12,7 @@ const findToExecute = (txs: SafeTransaction[], version: string, chainId: number)
   if (eligableTxs.length != 1) throw Error("Unexpected number of transactions")
   return {
     ...eligableTxs[0],
+    data: eligableTxs[0].data || "",
     version,
     chainId
   }
