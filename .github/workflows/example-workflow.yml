@@ -3,6 +3,8 @@ name: Varangian Actions Example
 on:
   workflow_dispatch: # Allows manual triggering
 
+concurrency: safe-tx-relayer
+
 jobs:
   fetch-check-relay:
     runs-on: ubuntu-latest
@@ -39,14 +41,10 @@ jobs:
           co-signer-material: ${{ secrets.COSIGNER_MATERIAL }}
           safe-tx: ${{ steps.fetch-tx.outputs.safe-tx }}
 
-      - name: Log Tx to Relay
-        run: |
-          echo "Tx to Relay: ${{ steps.fetch-tx.outputs.safe-tx }}"
-
       - name: Relay Tx
         id: relay
         if: ${{ steps.fetch-tx.outputs.safe-tx != '' }}
         uses: ./actions/relay 
         with:
-          co-signer-sig: ${{ steps.check-tx.outputs.co-signer-signature }}
+          co-signer-signature: ${{ steps.check-tx.outputs.co-signer-signature }}
           safe-tx: ${{ steps.fetch-tx.outputs.safe-tx }}
