@@ -11,6 +11,7 @@ export interface SafeInfo {
 }
 
 export interface SafeTransaction {
+    safeTxHash: string;
     safe: string;
     to: string;
     value: string;
@@ -26,6 +27,11 @@ export interface SafeTransaction {
     confirmationsRequired: number;
 }
 
+export interface ExtendedSafeTransaction extends SafeTransaction {
+    chainId: number;
+    version: string;
+}
+
 export interface SafeSignature {
     owner: string;
     signature: string;
@@ -35,4 +41,9 @@ export interface SafeSignature {
 export interface EthTransaction {
     to: string;
     data: string;
+}
+
+export interface ChainInfo {
+    id: number;
+    name: string;
 }

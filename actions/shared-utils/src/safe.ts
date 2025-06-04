@@ -1,6 +1,15 @@
 import { ethers } from 'ethers'
 import { safeInterface } from './encoding'
-import { EthTransaction, SafeInfo, SafeSignature, SafeTransaction } from './types'
+import { ChainInfo, EthTransaction, SafeInfo, SafeSignature, SafeTransaction } from './types'
+
+export const loadChainInfo = async (serviceUrl: string, safeAddress: string): Promise<ChainInfo> => {
+    const resp = await fetch(`${serviceUrl}/api/v1/about/ethereum-rpc/`)
+    const serviceInfo: { chain_id: number, chain: string } = await resp.json()
+    return {
+        id: serviceInfo.chain_id,
+        name: serviceInfo.chain
+    }
+}
 
 export const loadSafeInfo = async (serviceUrl: string, safeAddress: string): Promise<SafeInfo> => {
     const resp = await fetch(`${serviceUrl}/api/v1/safes/${safeAddress}`)
@@ -22,7 +31,7 @@ const buildSafeTxSignatures = (signatures: SafeSignature[]): string => {
 }
 
 export const buildEthTransaction = (tx: SafeTransaction, coSignerSig: string): EthTransaction => {
-    const signatures = buildSafeTxSignatures(tx.confirmations)
+    const signatures = buildSafeTxSignatures(tx.confirmations) + coSignerSig.slice(2)
     const data = safeInterface.encodeFunctionData("execTransaction", [
         tx.to,
         tx.value,
