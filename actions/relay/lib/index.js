@@ -34698,31 +34698,13 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 // .github/actions/my-custom-action/src/main.ts
 const core = __importStar(__nccwpck_require__(6618));
 const shared_utils_1 = __nccwpck_require__(3394);
-const findToExecute = (txs) => {
-    const eligableTxs = [];
-    for (const tx of txs) {
-        if (tx.confirmationsRequired <= tx.confirmations.length)
-            eligableTxs.push(tx);
-    }
-    if (eligableTxs.length == 0)
-        return null;
-    if (eligableTxs.length != 1)
-        throw Error("Unexpected number of transactions");
-    return eligableTxs[0];
-};
 async function run() {
     try {
         const safeTx = JSON.parse(core.getInput('safe-tx', { required: true }));
-        // TODO: move to separate action
-        core.info("Check if transaction passed all checks");
-        if (safeTx.operation != 0 && safeTx.to != "0x9641d764fc13c8B624c04430C7356C1C7C8102e2") {
-            throw Error("Unexpected delegatecall");
-        }
-        core.info("(skip) Generate co-signer signature");
-        const coSignerSig = "";
+        const coSignerSig = core.getInput('co-signer-signature');
         core.info("Relay transaction");
         const transactionToRelay = (0, shared_utils_1.buildEthTransaction)(safeTx, coSignerSig);
-        const resp = await fetch("https://safe-client.safe.global/v1/chains/100/relay", {
+        const resp = await fetch(`https://safe-client.safe.global/v1/chains/${safeTx.chainId}/relay`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -34791,6 +34773,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__nccwpck_require__(9074), exports);
+__exportStar(__nccwpck_require__(1984), exports);
 __exportStar(__nccwpck_require__(8046), exports);
 __exportStar(__nccwpck_require__(4290), exports);
 
@@ -34803,9 +34786,18 @@ __exportStar(__nccwpck_require__(4290), exports);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.buildEthTransaction = exports.loadNextTxs = exports.loadSafeInfo = void 0;
+exports.buildEthTransaction = exports.loadNextTxs = exports.loadSafeInfo = exports.loadChainInfo = void 0;
 const ethers_1 = __nccwpck_require__(8006);
 const encoding_1 = __nccwpck_require__(4290);
+const loadChainInfo = async (serviceUrl, safeAddress) => {
+    const resp = await fetch(`${serviceUrl}/api/v1/about/ethereum-rpc/`);
+    const serviceInfo = await resp.json();
+    return {
+        id: serviceInfo.chain_id,
+        name: serviceInfo.chain
+    };
+};
+exports.loadChainInfo = loadChainInfo;
 const loadSafeInfo = async (serviceUrl, safeAddress) => {
     const resp = await fetch(`${serviceUrl}/api/v1/safes/${safeAddress}`);
     return await resp.json();
@@ -34825,7 +34817,7 @@ const buildSafeTxSignatures = (signatures) => {
         .join("");
 };
 const buildEthTransaction = (tx, coSignerSig) => {
-    const signatures = buildSafeTxSignatures(tx.confirmations);
+    const signatures = buildSafeTxSignatures(tx.confirmations) + coSignerSig.slice(2);
     const data = encoding_1.safeInterface.encodeFunctionData("execTransaction", [
         tx.to,
         tx.value,
@@ -34845,6 +34837,41 @@ const buildEthTransaction = (tx, coSignerSig) => {
     };
 };
 exports.buildEthTransaction = buildEthTransaction;
+
+
+/***/ }),
+
+/***/ 1984:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.signSafeTx = exports.getSafeTxHash = exports.EIP712_SAFE_TX_TYPE = void 0;
+const ethers_1 = __nccwpck_require__(8006);
+exports.EIP712_SAFE_TX_TYPE = {
+    // "SafeTx(address to,uint256 value,bytes data,uint8 operation,uint256 safeTxGas,uint256 baseGas,uint256 gasPrice,address gasToken,address refundReceiver,uint256 nonce)"
+    SafeTx: [
+        { type: "address", name: "to" },
+        { type: "uint256", name: "value" },
+        { type: "bytes", name: "data" },
+        { type: "uint8", name: "operation" },
+        { type: "uint256", name: "safeTxGas" },
+        { type: "uint256", name: "baseGas" },
+        { type: "uint256", name: "gasPrice" },
+        { type: "address", name: "gasToken" },
+        { type: "address", name: "refundReceiver" },
+        { type: "uint256", name: "nonce" },
+    ],
+};
+const getSafeTxHash = (safeTx) => {
+    return ethers_1.ethers.TypedDataEncoder.hash({ verifyingContract: safeTx.safe, chainId: safeTx.chainId }, exports.EIP712_SAFE_TX_TYPE, safeTx);
+};
+exports.getSafeTxHash = getSafeTxHash;
+const signSafeTx = async (wallet, safeTx) => {
+    return await wallet.signTypedData({ verifyingContract: safeTx.safe, chainId: safeTx.chainId }, exports.EIP712_SAFE_TX_TYPE, safeTx);
+};
+exports.signSafeTx = signSafeTx;
 
 
 /***/ }),

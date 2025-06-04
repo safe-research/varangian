@@ -1,6 +1,94 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 5596:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+// .github/actions/my-custom-action/src/main.ts
+const core = __importStar(__nccwpck_require__(6618));
+const ethers_1 = __nccwpck_require__(8006);
+const shared_utils_1 = __nccwpck_require__(3394);
+const getCoSigner = (coSignerMaterial) => {
+    const wallet = new ethers_1.ethers.Wallet(ethers_1.ethers.keccak256(ethers_1.ethers.toUtf8Bytes(coSignerMaterial)));
+    core.info(`Co-signer address: ${wallet.address}`);
+    return wallet;
+};
+const checkTransaction = async (coSignerMaterial, safeTx) => {
+    const wallet = getCoSigner(coSignerMaterial);
+    const safeTxHash = (0, shared_utils_1.getSafeTxHash)(safeTx);
+    core.info("Check Safe transaction hash");
+    if (safeTxHash != safeTx.safeTxHash)
+        throw Error(`Unexpected Safe transaction hash ${safeTxHash}, expected ${safeTx.safeTxHash}`);
+    core.info("Check if transaction passed all checks");
+    if (safeTx.operation != 0 && safeTx.to != "0x9641d764fc13c8B624c04430C7356C1C7C8102e2") {
+        throw Error("Unexpected delegatecall");
+    }
+    core.info("Generate co-signer signature");
+    const coSignerSignature = wallet.signingKey.sign(safeTxHash).serialized;
+    console.log({ coSignerSignature });
+    return { coSignerSignature };
+};
+async function run() {
+    try {
+        const coSignerMaterial = core.getInput('co-signer-material', { required: true });
+        const encodedSafeTx = core.getInput('safe-tx');
+        if (!encodedSafeTx) {
+            getCoSigner(coSignerMaterial);
+            return;
+        }
+        const safeTx = JSON.parse(encodedSafeTx);
+        const output = await checkTransaction(coSignerMaterial, safeTx);
+        core.setOutput('safe-tx', output.coSignerSignature);
+        /*
+        */
+    }
+    catch (error) {
+        // If an error occurs, set the action state to failed
+        core.setFailed(error.message);
+    }
+}
+// Call the run function to execute the action
+run();
+
+
+/***/ }),
+
 /***/ 7980:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -34656,95 +34744,6 @@ function socketOnError() {
 
 /***/ }),
 
-/***/ 5596:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-// .github/actions/my-custom-action/src/main.ts
-const core = __importStar(__nccwpck_require__(6618));
-const shared_utils_1 = __nccwpck_require__(3394);
-const findToExecute = (txs) => {
-    const eligableTxs = [];
-    for (const tx of txs) {
-        if (tx.confirmationsRequired <= tx.confirmations.length)
-            eligableTxs.push(tx);
-    }
-    if (eligableTxs.length == 0)
-        return null;
-    if (eligableTxs.length != 1)
-        throw Error("Unexpected number of transactions");
-    return eligableTxs[0];
-};
-async function run() {
-    try {
-        const safeTx = JSON.parse(core.getInput('safe-tx', { required: true }));
-        // TODO: move to separate action
-        core.info("Check if transaction passed all checks");
-        if (safeTx.operation != 0 && safeTx.to != "0x9641d764fc13c8B624c04430C7356C1C7C8102e2") {
-            throw Error("Unexpected delegatecall");
-        }
-        core.info("(skip) Generate co-signer signature");
-        const coSignerSig = "";
-        core.info("Relay transaction");
-        const transactionToRelay = (0, shared_utils_1.buildEthTransaction)(safeTx, coSignerSig);
-        const resp = await fetch("https://safe-client.safe.global/v1/chains/100/relay", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                version: "1.0.0",
-                ...transactionToRelay
-            })
-        });
-        core.info(await resp.text());
-    }
-    catch (error) {
-        // If an error occurs, set the action state to failed
-        core.setFailed(error.message);
-    }
-}
-// Call the run function to execute the action
-run();
-
-
-/***/ }),
-
 /***/ 4290:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -34791,6 +34790,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__nccwpck_require__(9074), exports);
+__exportStar(__nccwpck_require__(1984), exports);
 __exportStar(__nccwpck_require__(8046), exports);
 __exportStar(__nccwpck_require__(4290), exports);
 
@@ -34803,9 +34803,18 @@ __exportStar(__nccwpck_require__(4290), exports);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.buildEthTransaction = exports.loadNextTxs = exports.loadSafeInfo = void 0;
+exports.buildEthTransaction = exports.loadNextTxs = exports.loadSafeInfo = exports.loadChainInfo = void 0;
 const ethers_1 = __nccwpck_require__(8006);
 const encoding_1 = __nccwpck_require__(4290);
+const loadChainInfo = async (serviceUrl, safeAddress) => {
+    const resp = await fetch(`${serviceUrl}/api/v1/about/ethereum-rpc/`);
+    const serviceInfo = await resp.json();
+    return {
+        id: serviceInfo.chain_id,
+        name: serviceInfo.chain
+    };
+};
+exports.loadChainInfo = loadChainInfo;
 const loadSafeInfo = async (serviceUrl, safeAddress) => {
     const resp = await fetch(`${serviceUrl}/api/v1/safes/${safeAddress}`);
     return await resp.json();
@@ -34825,7 +34834,7 @@ const buildSafeTxSignatures = (signatures) => {
         .join("");
 };
 const buildEthTransaction = (tx, coSignerSig) => {
-    const signatures = buildSafeTxSignatures(tx.confirmations);
+    const signatures = buildSafeTxSignatures(tx.confirmations) + coSignerSig.slice(2);
     const data = encoding_1.safeInterface.encodeFunctionData("execTransaction", [
         tx.to,
         tx.value,
@@ -34845,6 +34854,41 @@ const buildEthTransaction = (tx, coSignerSig) => {
     };
 };
 exports.buildEthTransaction = buildEthTransaction;
+
+
+/***/ }),
+
+/***/ 1984:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.signSafeTx = exports.getSafeTxHash = exports.EIP712_SAFE_TX_TYPE = void 0;
+const ethers_1 = __nccwpck_require__(8006);
+exports.EIP712_SAFE_TX_TYPE = {
+    // "SafeTx(address to,uint256 value,bytes data,uint8 operation,uint256 safeTxGas,uint256 baseGas,uint256 gasPrice,address gasToken,address refundReceiver,uint256 nonce)"
+    SafeTx: [
+        { type: "address", name: "to" },
+        { type: "uint256", name: "value" },
+        { type: "bytes", name: "data" },
+        { type: "uint8", name: "operation" },
+        { type: "uint256", name: "safeTxGas" },
+        { type: "uint256", name: "baseGas" },
+        { type: "uint256", name: "gasPrice" },
+        { type: "address", name: "gasToken" },
+        { type: "address", name: "refundReceiver" },
+        { type: "uint256", name: "nonce" },
+    ],
+};
+const getSafeTxHash = (safeTx) => {
+    return ethers_1.ethers.TypedDataEncoder.hash({ verifyingContract: safeTx.safe, chainId: safeTx.chainId }, exports.EIP712_SAFE_TX_TYPE, safeTx);
+};
+exports.getSafeTxHash = getSafeTxHash;
+const signSafeTx = async (wallet, safeTx) => {
+    return await wallet.signTypedData({ verifyingContract: safeTx.safe, chainId: safeTx.chainId }, exports.EIP712_SAFE_TX_TYPE, safeTx);
+};
+exports.signSafeTx = signSafeTx;
 
 
 /***/ }),

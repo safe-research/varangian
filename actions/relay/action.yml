@@ -7,6 +7,8 @@ inputs:
   safe-tx:
     description: "Safe Transaction to relay"
     required: true
+  co-signer-signature: # id of output
+    description: 'Signature of the co-signer'
 
 runs:
   using: 'node20' # Specify the Node.js version to use

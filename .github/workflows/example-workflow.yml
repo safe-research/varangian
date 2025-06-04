@@ -37,6 +37,7 @@ jobs:
         uses: ./actions/check 
         with:
           co-signer-material: ${{ secrets.COSIGNER_MATERIAL }}
+          safe-tx: ${{ steps.fetch-tx.outputs.safe-tx }}
 
       - name: Log Tx to Relay
         run: |
@@ -47,4 +48,5 @@ jobs:
         if: ${{ steps.fetch-tx.outputs.safe-tx != '' }}
         uses: ./actions/relay 
         with:
+          co-signer-sig: ${{ steps.check-tx.outputs.co-signer-signature }}
           safe-tx: ${{ steps.fetch-tx.outputs.safe-tx }}
