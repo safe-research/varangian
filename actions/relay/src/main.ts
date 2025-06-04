@@ -5,7 +5,7 @@ import { buildEthTransaction, EthTransaction, ExtendedSafeTransaction, loadChain
 
 const processRelay = async (safeTx: ExtendedSafeTransaction, coSignerSig: string | null): Promise<string> => {
   core.info("Relay transaction")
-  const transactionToRelay: EthTransaction = buildEthTransaction(safeTx, "")
+  const transactionToRelay: EthTransaction = buildEthTransaction(safeTx, coSignerSig || "")
   console.log({ transactionToRelay })
 
   core.info("Simulate transaction")
@@ -14,10 +14,9 @@ const processRelay = async (safeTx: ExtendedSafeTransaction, coSignerSig: string
   const simulationResult = await provider.call(transactionToRelay)
   console.log({ simulationResult })
   const success = ethers.AbiCoder.defaultAbiCoder().decode(["bool"], simulationResult)[0]
-  if (!success) throw Error("Cannot relaY Safe transaction")
-  return simulationResult
+  if (!success) throw Error("Cannot relay Safe transaction")
 
-  //return relayEthTransaction(safeTx.chainId, transactionToRelay)
+  return relayEthTransaction(safeTx.chainId, transactionToRelay)
 }
 
 async function run() {

@@ -74,7 +74,7 @@ async function run() {
         }
         const safeTx = JSON.parse(encodedSafeTx);
         const output = await checkTransaction(coSignerMaterial, safeTx);
-        core.setOutput('safe-tx', output.coSignerSignature);
+        core.setOutput('co-signer-signature', output.coSignerSignature);
         /*
         */
     }

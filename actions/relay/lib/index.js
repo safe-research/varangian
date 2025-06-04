@@ -34710,9 +34710,8 @@ const processRelay = async (safeTx, coSignerSig) => {
     console.log({ simulationResult });
     const success = ethers_1.ethers.AbiCoder.defaultAbiCoder().decode(["bool"], simulationResult)[0];
     if (!success)
-        throw Error("Cannot relaY Safe transaction");
-    return simulationResult;
-    //return relayEthTransaction(safeTx.chainId, transactionToRelay)
+        throw Error("Cannot relay Safe transaction");
+    return (0, shared_utils_1.relayEthTransaction)(safeTx.chainId, transactionToRelay);
 };
 async function run() {
     try {
