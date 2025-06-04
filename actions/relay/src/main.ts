@@ -9,6 +9,8 @@ async function run() {
 
     core.info("Relay transaction")
     const transactionToRelay: EthTransaction = buildEthTransaction(safeTx, coSignerSig)
+    console.log({ transactionToRelay })
+    /*
     const resp = await fetch(`https://safe-client.safe.global/v1/chains/${safeTx.chainId}/relay`, {
       method: "POST",
       headers: {
@@ -20,6 +22,7 @@ async function run() {
       })
     })
     core.info(await resp.text())
+    */
   } catch (error: any) {
     // If an error occurs, set the action state to failed
     core.setFailed(error.message);
