@@ -5,7 +5,7 @@ import { buildEthTransaction, EthTransaction, ExtendedSafeTransaction, loadChain
 
 const processRelay = async (safeTx: ExtendedSafeTransaction, coSignerSig: string | null): Promise<string> => {
   core.info("Relay transaction")
-  const transactionToRelay: EthTransaction = buildEthTransaction(safeTx, coSignerSig || "")
+  const transactionToRelay: EthTransaction = buildEthTransaction(safeTx, "")
   console.log({ transactionToRelay })
 
   core.info("Simulate transaction")

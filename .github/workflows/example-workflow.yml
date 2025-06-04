@@ -3,6 +3,8 @@ name: Varangian Actions Example
 on:
   workflow_dispatch: # Allows manual triggering
 
+concurrency: safe-tx-relayer
+
 jobs:
   fetch-check-relay:
     runs-on: ubuntu-latest
