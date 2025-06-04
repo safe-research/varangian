@@ -34697,17 +34697,29 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 // .github/actions/my-custom-action/src/main.ts
 const core = __importStar(__nccwpck_require__(6618));
+const ethers_1 = __nccwpck_require__(8006);
 const shared_utils_1 = __nccwpck_require__(3394);
+const processRelay = async (safeTx, coSignerSig) => {
+    core.info("Relay transaction");
+    const transactionToRelay = (0, shared_utils_1.buildEthTransaction)(safeTx, coSignerSig || "");
+    console.log({ transactionToRelay });
+    core.info("Simulate transaction");
+    const chainInfo = await (0, shared_utils_1.loadChainInfo)(`${safeTx.chainId}`);
+    const provider = new ethers_1.ethers.JsonRpcProvider(chainInfo.publicRpcUri.value);
+    const simulationResult = await provider.call(transactionToRelay);
+    console.log({ simulationResult });
+    const success = ethers_1.ethers.AbiCoder.defaultAbiCoder().decode(["bool"], simulationResult)[0];
+    if (!success)
+        throw Error("Cannot relaY Safe transaction");
+    return simulationResult;
+    //return relayEthTransaction(safeTx.chainId, transactionToRelay)
+};
 async function run() {
     try {
         const safeTx = JSON.parse(core.getInput('safe-tx', { required: true }));
         const coSignerSig = core.getInput('co-signer-signature');
-        core.info("Relay transaction");
-        const transactionToRelay = (0, shared_utils_1.buildEthTransaction)(safeTx, coSignerSig);
-        console.log({ transactionToRelay });
-        const chainDetails = await fetch(`https://safe-client.safe.global/v1/chains/${safeTx.chainId}/`);
-        const resp = await (0, shared_utils_1.relayEthTransaction)(safeTx.chainId, transactionToRelay);
-        core.info(resp);
+        const out = await processRelay(safeTx, coSignerSig);
+        core.info(out);
     }
     catch (error) {
         // If an error occurs, set the action state to failed
