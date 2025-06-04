@@ -34704,6 +34704,7 @@ async function run() {
         const coSignerSig = core.getInput('co-signer-signature');
         core.info("Relay transaction");
         const transactionToRelay = (0, shared_utils_1.buildEthTransaction)(safeTx, coSignerSig);
+        console.log({ transactionToRelay });
         const resp = await fetch(`https://safe-client.safe.global/v1/chains/${safeTx.chainId}/relay`, {
             method: "POST",
             headers: {

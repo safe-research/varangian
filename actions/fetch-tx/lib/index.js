@@ -55,6 +55,7 @@ const findToExecute = (txs, version, chainId) => {
         throw Error("Unexpected number of transactions");
     return {
         ...eligableTxs[0],
+        data: eligableTxs[0].data || "0x",
         version,
         chainId
     };
