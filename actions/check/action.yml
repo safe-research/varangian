@@ -1,6 +1,6 @@
 # .github/actions/my-custom-action/action.yml
 name: 'Varangian Guard - Check'
-description: 'A simple guard for a Safe'
+description: 'Action to check and co-sign the specified Safe transaction'
 author: 'rmeissner'
 
 inputs:

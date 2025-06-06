@@ -1,6 +1,6 @@
 # .github/actions/my-custom-action/action.yml
 name: 'Varangian Guard - Relay'
-description: 'A simple guard for a Safe'
+description: 'Action to relay a Safe transaction that has been approved'
 author: 'rmeissner'
 
 inputs:

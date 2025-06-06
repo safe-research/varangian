@@ -6,4 +6,8 @@ via_ir = true
 optimizer = true
 optimizer-runs = 10_000_000
 
+[etherscan]
+# Gnosis Chain uses the Etherscan-compatible API, but needs a specific URL
+gnosis = { key = "${ETHERSCAN_API_KEY}", chain = 100, api_url = "https://api.gnosisscan.io/api" }
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
