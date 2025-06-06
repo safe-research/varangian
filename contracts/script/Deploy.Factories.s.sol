@@ -13,7 +13,7 @@ contract DeployScript is Script {
         vm.startBroadcast();
 
         // TODO: use deterministic deployment
-        factory = new SafenetGuardFactory();
+        factory = new SafenetGuardFactory{salt: 0}();
 
         vm.stopBroadcast();
     }

@@ -5,7 +5,6 @@ import SafeAppsSDK from '@safe-global/safe-apps-sdk'
 import './App.css'
 import { Box, Button, Card, TextField, Typography } from '@mui/material';
 import { ethers } from 'ethers';
-import SDK from '@safe-global/safe-apps-sdk';
 
 const GUARD_FACTORY_ADDRESS = "0xeEa957669eEe31aE47F294b346d1971c76318c5E"
 const GUARD_STORAGE_SLOT = "0x4a204f620c8c5ccdca3fd54d003badd85ba500436a431f0cbda4f558c93c34c8"
@@ -54,7 +53,7 @@ function App() {
           enabled: guard === expectedGuard,
           coSigner
         })
-      } catch (e: any) {
+      } catch (e) {
         console.log(e)
       }
     }
@@ -89,7 +88,7 @@ function App() {
       sdk.txs.send({
         txs
       })
-    } catch (e: any) {
+    } catch (e) {
       console.log(e)
       setErrorMsg(`${e}`)
     }

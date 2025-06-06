@@ -1,6 +1,6 @@
 # .github/actions/my-custom-action/action.yml
 name: 'Varangian Guard - Fetch Tx'
-description: 'A simple guard for a Safe'
+description: 'Action to fetch the next Safe transaction that should be handled from the Safe transaction service'
 author: 'rmeissner'
 
 inputs:
@@ -17,5 +17,10 @@ outputs:
     description: 'Next transaction to execute'
 
 runs:
-  using: 'node20' # Specify the Node.js version to use
-  main: 'dist/main.js' # Entry point for your action
+  using: 'composite'
+  steps:
+    - name: "Run script"
+      id: script
+      uses: 'node20' # Specify the Node.js version to use
+      run: 'dist/main.js' # Entry point for your action
+      
