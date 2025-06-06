@@ -15,12 +15,8 @@ inputs:
 outputs:
   safe-tx: # id of output
     description: 'Next transaction to execute'
-
+    
 runs:
-  using: 'composite'
-  steps:
-    - name: "Run script"
-      id: script
-      uses: 'node20' # Specify the Node.js version to use
-      run: 'dist/main.js' # Entry point for your action
+  using: 'node20' # Specify the Node.js version to use
+  main: 'dist/main.js' # Entry point for your action
       
