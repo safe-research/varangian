@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk';
 import type { BaseTransaction } from '@safe-global/safe-apps-sdk'
 import SafeAppsSDK from '@safe-global/safe-apps-sdk'
 import './App.css'
-import { Box, Button, Card, CardActions, CardContent, Collapse, IconButton, List, ListItem, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, CardActions, CardContent, Collapse, IconButton, Link, List, ListItem, TextField, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ethers } from 'ethers';
+import { SafeResearchBanner, SafeResearchFooter } from './components/SafeResearch';
 
 const GUARD_FACTORY_ADDRESS = "0xeEa957669eEe31aE47F294b346d1971c76318c5E"
 const GUARD_STORAGE_SLOT = "0x4a204f620c8c5ccdca3fd54d003badd85ba500436a431f0cbda4f558c93c34c8"
@@ -30,6 +31,10 @@ const call = async (sdk: SafeAppsSDK, address: string, method: string, params: a
 interface CurrentSafeState {
   enabled: boolean,
   coSigner: string | null
+}
+
+const CustomLink = ({ to, children }: { to: string, children: ReactNode }) => {
+  return <Link href={to} target="_blank" rel="noopener" underline="none" color="inherit" sx={{ ":hover": { color: "#12ff80" } }}>{children}</Link>
 }
 
 function App() {
@@ -98,6 +103,7 @@ function App() {
 
   return (
     <>
+      <SafeResearchBanner />
       <h1>Varangian Guard</h1>
       <Box sx={{ textAlign: 'start', width: 600 }}>
         <p>define: Varangian Guard</p>
@@ -168,6 +174,7 @@ function App() {
           </CardContent>
         </Collapse>
       </Card>
+      <SafeResearchFooter repo='varangian' />
     </>
   )
 }
