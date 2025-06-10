@@ -3,7 +3,8 @@ import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk';
 import type { BaseTransaction } from '@safe-global/safe-apps-sdk'
 import SafeAppsSDK from '@safe-global/safe-apps-sdk'
 import './App.css'
-import { Box, Button, Card, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Collapse, IconButton, List, ListItem, TextField, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ethers } from 'ethers';
 
 const GUARD_FACTORY_ADDRESS = "0xeEa957669eEe31aE47F294b346d1971c76318c5E"
@@ -35,6 +36,7 @@ function App() {
   const [currentState, setCurrentState] = useState<CurrentSafeState | undefined>()
   const [errorMsg, setErrorMsg] = useState("")
   const [guarantor, setGuarantor] = useState("")
+  const [expanded, setExpanded] = useState(false);
   const { sdk, connected, safe } = useSafeAppsSDK();
 
   useEffect(() => {
@@ -125,6 +127,47 @@ function App() {
           This App has to be run as a Safe App in a compatible Safe Interface.
         </Card>
       )}
+      <Card sx={{ padding: "4px 16px", marginTop: "8px", width: 600 }}>
+        <CardActions disableSpacing>
+          Instructions
+          <IconButton
+            onClick={() => setExpanded(!expanded)}
+            sx={{ marginLeft: "auto" }}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon sx={{ transform: `rotate(${expanded ? 180 : 0}deg)` }} />
+          </IconButton>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent sx={{ textAlign: "start", padding: "8px" }}>
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>Setup GitHub Action</Typography>
+            <Typography sx={{ marginBottom: 2 }}>
+              To setup the go to the <a href="https://github.com/safe-research/varangian-template" target="_blank">Varangian Template repository</a> and create a copy of it by selecting "Use this template" in the top right.
+            </Typography>
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>Setup GitHub Secrets</Typography>
+            <Typography sx={{ marginBottom: 2 }}>
+              For the GitHub action to work it is necessary to set the following secrets under "Settings" &gt; "Secrets and variables" &gt; "New repository secret":
+              <List>
+                <ListItem>
+                  COSIGNER_MATERIAL - random string that is used to derive the Co-Signer private key
+                </ListItem>
+                <ListItem>
+                  SAFE_ADDRESS - address of the Safe that should be monitored
+                </ListItem>
+                <ListItem>
+                  SERVICE_URL - base url of the service that is used to submit transactions
+                </ListItem>
+              </List>
+            </Typography>
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>Retrieving Co-Signer Address</Typography>
+            <Typography sx={{ marginBottom: 2 }}>
+              To get the co-signer address it is necessary to run the GitHub action. Select "Actions" &gt; "Varangian Guard" (in the left sidebar) and click "Run workflow" (on the right side).
+              <br /><br />
+              Now you can select the "Varangian Guard" workflow run and there will be a job displayed called "fetch-check-relay". When clicking on it you can select the "Check Tx" step which prints the co-signer address.
+            </Typography>
+          </CardContent>
+        </Collapse>
+      </Card>
     </>
   )
 }
