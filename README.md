@@ -1,8 +1,7 @@
 # Varangian Guard
 
-> ⚠️ **Disclaimer** ⚠️
->
-> This project is meant for research purposes and is not production ready. Before using perform due diligence and tests of the code. Use at own risk.
+> [!WARNING]
+> Code in this repository is not audited and may contain serious security holes. Use at your own risk.
 
 This repo contains the [GitHub actions](./actions), [Smart Contracts](./contracts/) and [Safe App](./app/) to setup a simple co-signer.
 

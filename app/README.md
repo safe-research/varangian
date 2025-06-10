@@ -10,7 +10,7 @@ The Safe App builds the transaction batch for the following steps:
 - Enable the deployed guard on the currently active Safe
 - Configure the Co-Signer on the Safenet Guard for the active Safe
 
-## Setup
+## Development
 
 * Install dependencies
 
@@ -23,6 +23,10 @@ npm i
 ```sh
 npm run dev
 ```
+
+## Deployment
+
+The Safe App is hosted via GitHub pages. It will be automatically deployed when pushing updates to the `app-releases` branch. For this [create a PR](https://github.com/safe-research/varangian/compare/app-release...main?expand=1) to merge the changes from `main`.
 
 ## Configuration details
 
