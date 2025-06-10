@@ -98,7 +98,7 @@ function App() {
     <>
       <h1>Varangian Guard</h1>
       <Box sx={{ textAlign: 'start', width: 600 }}>
-        <p>define: Variangian Guard</p>
+        <p>define: Varangian Guard</p>
         <p>an elite unit of the Byzantine army from the tenth to the fourteenth century who served as personal bodyguards to the Byzantine emperors</p>
       </Box>
       {currentState && (
@@ -107,7 +107,7 @@ function App() {
           <Typography>{currentState.coSigner}</Typography>
         </Card>
       )}
-      {currentState?.enabled == true || (
+      {connected && (currentState?.enabled == true || (
         <Card sx={{ display: "flex", flexDirection: "column", padding: "16px", marginTop: "8px" }}>
           <TextField label={errorMsg || "Co-Signer Address"} onChange={(e) => {
             setErrorMsg("")
@@ -118,6 +118,11 @@ function App() {
             onClick={() => enableGuard(guarantor)}>
             Setup Varangian Guard
           </Button>
+        </Card>
+      ))}
+      {!connected && (
+        <Card sx={{ display: "flex", flexDirection: "column", padding: "16px", marginTop: "8px" }}>
+          This App has to be run as a Safe App in a compatible Safe Interface.
         </Card>
       )}
     </>
