@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk';
 import type { BaseTransaction } from '@safe-global/safe-apps-sdk'
 import SafeAppsSDK from '@safe-global/safe-apps-sdk'
 import './App.css'
-import { Alert, Box, Button, Card, CardActions, CardContent, Collapse, IconButton, Link, List, ListItem, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Collapse, IconButton, List, ListItem, TextField, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ethers } from 'ethers';
 import { SafeResearchBanner, SafeResearchFooter } from './components/SafeResearch';
@@ -31,10 +31,6 @@ const call = async (sdk: SafeAppsSDK, address: string, method: string, params: a
 interface CurrentSafeState {
   enabled: boolean,
   coSigner: string | null
-}
-
-const CustomLink = ({ to, children }: { to: string, children: ReactNode }) => {
-  return <Link href={to} target="_blank" rel="noopener" underline="none" color="inherit" sx={{ ":hover": { color: "#12ff80" } }}>{children}</Link>
 }
 
 function App() {
