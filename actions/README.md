@@ -18,6 +18,10 @@ Collection of GitHub Actions used to co-sign transactions.
 
 ## Setup
 
+To setup the GitHub actions for yourself it is recommended to use the [Varangian Guard Template](https://github.com/safe-research/varangian-template)
+
+## Development
+
 The actions are setup as a monorepo. Each action is maintained in a separate folder. The `shared-utils` folder contains all shared logic.
 
 * Install dependencies
