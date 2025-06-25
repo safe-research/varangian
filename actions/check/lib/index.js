@@ -62,18 +62,21 @@ const checkTransaction = async (coSignerMaterial, safeTx) => {
     core.info("Generate co-signer signature");
     const coSignerSignature = wallet.signingKey.sign(safeTxHash).serialized;
     console.log({ coSignerSignature });
-    return { coSignerSignature };
+    return { coSignerSignature, coSignerAddress: wallet.address };
 };
 async function run() {
     try {
         const coSignerMaterial = core.getInput('co-signer-material', { required: true });
         const encodedSafeTx = core.getInput('safe-tx');
         if (!encodedSafeTx) {
-            getCoSigner(coSignerMaterial);
+            // If there is no transaction to check, then we only return the co-signer address
+            const wallet = getCoSigner(coSignerMaterial);
+            core.setOutput('co-signer-address', wallet.address);
             return;
         }
         const safeTx = JSON.parse(encodedSafeTx);
         const output = await checkTransaction(coSignerMaterial, safeTx);
+        core.setOutput('co-signer-address', output.coSignerAddress);
         core.setOutput('co-signer-signature', output.coSignerSignature);
         /*
         */

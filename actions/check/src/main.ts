@@ -9,7 +9,7 @@ const getCoSigner = (coSignerMaterial: string): ethers.Wallet => {
   return wallet
 }
 
-const checkTransaction = async (coSignerMaterial: string, safeTx: ExtendedSafeTransaction): Promise<{ coSignerSignature: string }> => {
+const checkTransaction = async (coSignerMaterial: string, safeTx: ExtendedSafeTransaction): Promise<{ coSignerSignature: string, coSignerAddress: string }> => {
   const wallet = getCoSigner(coSignerMaterial)
 
   const safeTxHash = getSafeTxHash(safeTx)
@@ -24,7 +24,7 @@ const checkTransaction = async (coSignerMaterial: string, safeTx: ExtendedSafeTr
   core.info("Generate co-signer signature")
   const coSignerSignature: string = wallet.signingKey.sign(safeTxHash).serialized
   console.log({ coSignerSignature });
-  return { coSignerSignature }
+  return { coSignerSignature, coSignerAddress: wallet.address }
 }
 
 async function run() {
@@ -32,11 +32,14 @@ async function run() {
     const coSignerMaterial = core.getInput('co-signer-material', { required: true });
     const encodedSafeTx = core.getInput('safe-tx')
     if (!encodedSafeTx) {
-      getCoSigner(coSignerMaterial)
+      // If there is no transaction to check, then we only return the co-signer address
+      const wallet = getCoSigner(coSignerMaterial)
+      core.setOutput('co-signer-address', wallet.address);
       return
     }
     const safeTx: ExtendedSafeTransaction = JSON.parse(encodedSafeTx);
     const output = await checkTransaction(coSignerMaterial, safeTx)
+    core.setOutput('co-signer-address', output.coSignerAddress);
     core.setOutput('co-signer-signature', output.coSignerSignature);
     /*
     */

@@ -12,7 +12,9 @@ inputs:
     # required: true
 
 outputs:
-  co-signer-signature: # id of output
+  co-signer-address:
+    description: 'Address of the co-signer'
+  co-signer-signature:
     description: 'Signature of the co-signer'
 
 runs:
