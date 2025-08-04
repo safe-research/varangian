@@ -7,6 +7,10 @@ inputs:
   co-signer-material:
     description: "Private key material used for co-signing"
     required: true
+  signature-1271-compatible:
+    description: 'Flag to indicate if the signature should be 1271 compatible'
+    required: false
+    type: boolean
   safe-tx:
     description: "Safe Transaction to check"
     # required: true
