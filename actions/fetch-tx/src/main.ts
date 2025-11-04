@@ -14,7 +14,7 @@ const processFetchTx = async (serviceUrl: string, safeAddress: string, safeTxHas
   const nextTxs = await loadNextTxs(serviceUrl, safeInfo);
   console.log({ nextTxs });
   core.info("Find transactions that should be executed")
-  const safeTx = findToExecute(nextTxs, safeInfo.version, chainId);
+  const safeTx = findToExecute(nextTxs, safeInfo.version, chainId, safeTxHash);
   return {
     safeTx
   }
@@ -24,7 +24,8 @@ async function run() {
   try {
     const serviceUrl = core.getInput('service-url', { required: true });
     const safeAddress = core.getInput('safe-address', { required: true });
-    const output = await processFetchTx(serviceUrl, safeAddress)
+    const safeTxHash = core.getInput('safe-tx-hash');
+    const output = await processFetchTx(serviceUrl, safeAddress, safeTxHash)
     if (output.safeTx == null) {
       core.info("No eligable transactions")
       return

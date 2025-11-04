@@ -8,7 +8,7 @@ export const findToExecute = (txs: SafeTransaction[], version: string, chainId: 
             eligableTxs.push(tx)
     }
     const targetSafeTx = (() => {
-        if (targetSafeTxHash === undefined) {
+        if (targetSafeTxHash === undefined || targetSafeTxHash === "") {
             if (eligableTxs.length == 0) return undefined
             if (eligableTxs.length != 1) throw Error("Unexpected number of transactions")
             return eligableTxs[0]

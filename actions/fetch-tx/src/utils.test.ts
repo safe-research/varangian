@@ -64,6 +64,19 @@ describe("findToExecute", () => {
     })
   });
 
+  it("should return available transaction if Safe Tx hash is empty string", () => {
+    const expectedTx = buildSafeTx({ confirmations: [buildSafeSignature()] })
+    const txs: SafeTransaction[] = [
+      expectedTx,
+      buildSafeTx()
+    ]
+    expect(findToExecute(txs, VERSION, CHAIN_ID, "")).toStrictEqual({
+      ...expectedTx,
+      version: VERSION,
+      chainId: CHAIN_ID
+    })
+  });
+
   it("should return null if specified tx hash is not eligible", () => {
     const txs: SafeTransaction[] = [
       buildSafeTx({ confirmations: [buildSafeSignature()] }),
