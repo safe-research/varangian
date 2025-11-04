@@ -27,7 +27,7 @@ async function run() {
     const safeTxHash = core.getInput('safe-tx-hash');
     const output = await processFetchTx(serviceUrl, safeAddress, safeTxHash)
     if (output.safeTx == null) {
-      core.info("No eligable transactions")
+      core.info("No eligible transactions")
       return
     }
     core.setOutput('safe-tx', JSON.stringify(output.safeTx));
