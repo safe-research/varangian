@@ -5,7 +5,7 @@ export const findToExecute = (txs: SafeTransaction[], version: string, chainId: 
     const eligableTxs: SafeTransaction[] = []
     for (const tx of txs) {
         if (tx.confirmationsRequired <= tx.confirmations.length)
-            eligableTxs.push(tx)
+            eligibleTxs.push(tx)
     }
     const targetSafeTx = (() => {
         if (targetSafeTxHash === undefined || targetSafeTxHash === "") {
