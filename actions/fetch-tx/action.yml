@@ -11,6 +11,9 @@ inputs:
     description: "Address of the Safe service"
     required: false
     default: "https://safe-transaction-gnosis-chain.safe.global/"
+  safe-tx-hash:
+    description: "Hash of a specific Safe transaction that should be fetched"
+    required: false
 
 outputs:
   safe-tx: # id of output

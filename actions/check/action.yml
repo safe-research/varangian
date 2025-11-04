@@ -9,6 +9,7 @@ inputs:
     required: true
   signature-1271-compatible:
     description: 'Flag to indicate if the signature should be 1271 compatible'
+    default: false
     required: false
     type: boolean
   safe-tx:
