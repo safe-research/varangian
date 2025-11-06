@@ -1,14 +1,12 @@
-import { ExtendedSafeTransaction } from "shared-utils"
-import { allowedDelegateCalls } from "./allowedDelegateCalls"
+import type { ExtendedSafeTransaction } from "shared-utils";
+import { allowedDelegateCalls } from "./allowedDelegateCalls";
 
-type Check = (safeTx: ExtendedSafeTransaction) => void
+type Check = (safeTx: ExtendedSafeTransaction) => void;
 
-const defaultChecks: Check[] = [
-    allowedDelegateCalls
-]
+const defaultChecks: Check[] = [allowedDelegateCalls];
 
 export const runChecks = (safeTx: ExtendedSafeTransaction, checks: Check[] = defaultChecks) => {
-    for (const check of checks) {
-        check(safeTx)
-    }
-}
+	for (const check of checks) {
+		check(safeTx);
+	}
+};

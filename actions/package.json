@@ -1,21 +1,23 @@
 {
-    "name": "varangian-guard-actions",
-    "version": "1.0.0",
-    "private": true,
-    "workspaces": [
-        "check",
-        "fetch-tx",
-        "relay",
-        "shared-utils"
-    ],
-    "scripts": {
-        "build:all": "npm run build -w shared-utils -w check -w fetch-tx -w relay",
-        "install:all": "npm install"
-    },
-    "devDependencies": {
-        "typescript": "^5.4.5",
-        "eslint": "^8.57.0",
-        "prettier": "^3.2.5",
-        "@vercel/ncc": "^0.38.1"
-    }
+	"name": "varangian-guard-actions",
+	"version": "1.0.0",
+	"private": true,
+	"workspaces": [
+		"check",
+		"fetch-tx",
+		"relay",
+		"shared-utils"
+	],
+	"scripts": {
+		"build:all": "npm run build -w shared-utils -w check -w fetch-tx -w relay",
+		"check": "biome check",
+		"install:all": "npm install"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.3.4",
+		"@vercel/ncc": "^0.38.1",
+		"eslint": "^8.57.0",
+		"prettier": "^3.2.5",
+		"typescript": "^5.4.5"
+	}
 }

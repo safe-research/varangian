@@ -1,27 +1,27 @@
 {
-  "name": "@safe-research/varangian-guard-shared",
-  "version": "1.0.0",
-  "description": "A simple guard for a Safe",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
-  "private": true,
-  "scripts": {
-    "build": "tsc",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "example": "ts-node examples/simple.ts"
-  },
-  "keywords": [],
-  "author": "rmeissner",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "dotenv": "^16.5.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.0.0",
-    "vitest": "^4.0.6"
-  },
-  "dependencies": {
-    "ethers": "^6.14.3"
-  }
+	"name": "@safe-research/varangian-guard-shared",
+	"version": "1.0.0",
+	"description": "A simple guard for a Safe",
+	"main": "dist/main.js",
+	"types": "dist/main.d.ts",
+	"private": true,
+	"scripts": {
+		"build": "tsc",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"example": "ts-node examples/simple.ts"
+	},
+	"keywords": [],
+	"author": "rmeissner",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^20.0.0",
+		"dotenv": "^16.5.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.0.0",
+		"vitest": "^4.0.6"
+	},
+	"dependencies": {
+		"ethers": "^6.14.3"
+	}
 }
