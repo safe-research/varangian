@@ -2,6 +2,7 @@
 import * as core from '@actions/core';
 import { ethers } from 'ethers';
 import { ExtendedSafeTransaction, getSafeTxHash } from 'shared-utils';
+import { runChecks } from './checks';
 
 const getCoSigner = (coSignerMaterial: string): ethers.Wallet => {
   const wallet = new ethers.Wallet(ethers.keccak256(ethers.toUtf8Bytes(coSignerMaterial)))
@@ -18,9 +19,8 @@ const checkTransaction = async (coSignerMaterial: string, safeTx: ExtendedSafeTr
   if (safeTxHash != safeTx.safeTxHash) throw Error(`Unexpected Safe transaction hash ${safeTxHash}, expected ${safeTx.safeTxHash}`)
 
   core.info("Check if transaction passed all checks")
-  if (safeTx.operation != 0 && safeTx.to != "0x9641d764fc13c8B624c04430C7356C1C7C8102e2") {
-    throw Error("Unexpected delegatecall")
-  }
+  runChecks(safeTx)
+
   core.info("Generate co-signer signature")
   const coSignerSignature: string = wallet.signingKey.sign(safeTxHash).serialized
   if (coSignerSig1271Compatible) {
